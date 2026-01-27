@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Entity;
+
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\MappedSuperclass]
+abstract class BaseEntity
+{
+    #[ORM\Id]
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    protected Uuid $id;
+
+    public function __construct()
+    {
+        $this->id = Uuid::v7();
+    }
+
+    public function __clone(): void
+    {
+        $this->id = Uuid::v7();
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
+}
