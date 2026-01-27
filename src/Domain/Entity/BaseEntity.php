@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
 abstract class BaseEntity

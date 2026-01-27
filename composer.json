@@ -75,5 +75,9 @@
             "require": "8.0.*",
             "docker": true
         }
+    },
+    "require-dev": {
+        "php-cs-fixer/shim": "^3.93",
+        "phpstan/phpstan": "^2.1"
     }
 }

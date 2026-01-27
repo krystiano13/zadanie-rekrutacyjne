@@ -82,6 +82,6 @@ class Url extends BaseEntity
 
     public function addClick(): void
     {
-        $this->clicks += 1;
+        ++$this->clicks;
     }
 }
