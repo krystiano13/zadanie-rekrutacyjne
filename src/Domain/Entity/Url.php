@@ -18,6 +18,9 @@ class Url extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 32, unique: true)]
     private string $code;
 
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private string $url;
+
     #[ORM\Column(enumType: UrlTypeEnum::class)]
     private UrlTypeEnum $type;
 
@@ -29,6 +32,9 @@ class Url extends BaseEntity
 
     #[ORM\Column(type: Types::INTEGER)]
     private int $clicks = 0;
+
+    #[ORM\ManyToOne(targetEntity: Url::class, inversedBy: 'urls')]
+    private User $user;
 
     public function getCode(): string
     {
@@ -83,5 +89,25 @@ class Url extends BaseEntity
     public function addClick(): void
     {
         ++$this->clicks;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): void
+    {
+        $this->url = $url;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 }
