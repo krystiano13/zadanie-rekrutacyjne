@@ -19,7 +19,7 @@ final readonly class UrlProvider
     {
         return null !== $this->queryRepository->findOneBy([
             'alias' => $alias,
-            'deletedAt' => null
+            'deletedAt' => null,
         ]);
     }
 

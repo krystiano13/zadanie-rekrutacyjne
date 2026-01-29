@@ -71,8 +71,7 @@ final class Controller extends AbstractController
     ): JsonResponse {
         $url = $urlProvider->loadById($id);
 
-        if ($url)
-        {
+        if ($url) {
             $deleteHandler->handle($url);
         }
 
@@ -87,8 +86,7 @@ final class Controller extends AbstractController
         try {
             $url = $urlProvider->loadById($id);
 
-            if (!$url)
-            {
+            if (!$url) {
                 throw new \InvalidArgumentException('URL not found');
             }
 
