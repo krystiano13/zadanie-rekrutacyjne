@@ -21,8 +21,7 @@ final readonly class ClickHandler
     {
         $url = $this->urlProvider->loadById($message->getUrlId());
 
-        if ($url)
-        {
+        if ($url) {
             $url->setClicks(
                 $url->getClicks() + 1
             );
@@ -30,6 +29,6 @@ final readonly class ClickHandler
             $this->repository->save($url);
         }
 
-        print_r("click" . " " . $message->getUrlId() . "\n");
+        print_r('click '.$message->getUrlId()."\n");
     }
 }
