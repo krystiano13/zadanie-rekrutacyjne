@@ -79,6 +79,29 @@ final class Controller extends AbstractController
         return $this->json([], 204);
     }
 
+    #[Route(path: '/api/urls/{id}/stats', name: 'api_urls_stats', methods: ['GET', 'HEAD'])]
+    public function stats(
+        string $id,
+        UrlProvider $urlProvider,
+    ): JsonResponse {
+        try {
+            $url = $urlProvider->loadById($id);
+
+            if (!$url)
+            {
+                throw new \InvalidArgumentException('URL not found');
+            }
+
+            return $this->json([
+                'clicks' => $url->getClicks(),
+            ], 200);
+        } catch (\Exception $e) {
+            return $this->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     #[Route(path: '/api/public', name: 'api_public', methods: ['GET', 'HEAD'])]
     public function getPublic(UrlProvider $provider): JsonResponse
     {
