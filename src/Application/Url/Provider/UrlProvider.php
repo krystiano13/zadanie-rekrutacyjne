@@ -57,4 +57,11 @@ final readonly class UrlProvider
     {
         return $this->queryRepository->find($id);
     }
+
+    public function loadByShortCode(string $shortCode): ?Url
+    {
+        return $this->queryRepository->findOneBy([
+            'code' => $shortCode,
+        ]);
+    }
 }

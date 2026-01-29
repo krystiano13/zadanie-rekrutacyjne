@@ -15,5 +15,10 @@ api_controllers:
     type: attribute
     prefix: "/"
 
+web_controllers:
+    resource: ../src/Web/Controller
+    type: attribute
+    prefix: "/"
+
 controllers:
     resource: routing.controllers
