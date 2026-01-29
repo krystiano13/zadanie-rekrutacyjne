@@ -27,8 +27,7 @@ final readonly class Create
         $url->setCode($shortUrl);
         $url->setType($dto->type);
 
-        if ($dto->expireTime)
-        {
+        if ($dto->expireTime) {
             switch ($dto->expireTime) {
                 case ExpireTimeEnum::HOUR:
                     $url->setExpiresAt(new \DateTimeImmutable('+1 hour'));
@@ -42,8 +41,7 @@ final readonly class Create
             }
         }
 
-        if ($dto->alias)
-        {
+        if ($dto->alias) {
             $isFree = $this->urlProvider->isAliasFree($dto->alias);
 
             if (!$isFree) {

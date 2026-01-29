@@ -37,7 +37,7 @@ final class Controller extends AbstractController
         #[MapRequestPayload]
         CreateUrlRequestDTO $dto,
         Create $createHandler,
-        ShortUrl $shortUrl
+        ShortUrl $shortUrl,
     ): JsonResponse {
         try {
             $shortenedUrl = $shortUrl->shortenUrl($dto->url);

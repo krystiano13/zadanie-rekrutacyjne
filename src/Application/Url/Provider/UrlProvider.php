@@ -17,9 +17,9 @@ final readonly class UrlProvider
 
     public function isAliasFree(string $alias): bool
     {
-        return $this->queryRepository->findOneBy([
-            'alias' => $alias
-        ]) !== null;
+        return null !== $this->queryRepository->findOneBy([
+            'alias' => $alias,
+        ]);
     }
 
     /**
@@ -38,7 +38,7 @@ final readonly class UrlProvider
     public function loadAllPublic(): array
     {
         return $this->queryRepository->findBy([
-            'type' => UrlTypeEnum::PUBLIC
+            'type' => UrlTypeEnum::PUBLIC,
         ]);
     }
 
