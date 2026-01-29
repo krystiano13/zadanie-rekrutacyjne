@@ -6,6 +6,7 @@ namespace App\Application\Url\Controller;
 
 use App\Application\Url\DTO\CreateUrlRequestDTO;
 use App\Application\Url\Handler\Create;
+use App\Application\Url\Handler\Delete;
 use App\Application\Url\Provider\UrlProvider;
 use App\Application\Url\ShortUrl;
 use App\Domain\Entity\User;
@@ -40,8 +41,13 @@ final class Controller extends AbstractController
         ShortUrl $shortUrl,
     ): JsonResponse {
         try {
+            /**
+             * @var User $user
+             */
+            $user = $this->getUser();
+
             $shortenedUrl = $shortUrl->shortenUrl($dto->url);
-            $createHandler->handle($dto, $shortenedUrl);
+            $createHandler->handle($dto, $shortenedUrl, $user);
 
             return $this->json([
                 'url' => $shortenedUrl,
@@ -55,6 +61,22 @@ final class Controller extends AbstractController
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    #[Route(path: '/api/urls/{id}', name: 'api_urls_destroy', methods: ['DELETE'])]
+    public function destroy(
+        string $id,
+        Delete $deleteHandler,
+        UrlProvider $urlProvider,
+    ): JsonResponse {
+        $url = $urlProvider->loadById($id);
+
+        if ($url)
+        {
+            $deleteHandler->handle($url);
+        }
+
+        return $this->json([], 204);
     }
 
     #[Route(path: '/api/public', name: 'api_public', methods: ['GET', 'HEAD'])]

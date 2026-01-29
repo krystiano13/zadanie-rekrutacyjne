@@ -19,6 +19,7 @@ final readonly class UrlProvider
     {
         return null !== $this->queryRepository->findOneBy([
             'alias' => $alias,
+            'deletedAt' => null
         ]);
     }
 
@@ -29,6 +30,7 @@ final readonly class UrlProvider
     {
         return $this->queryRepository->findBy([
             'user' => $user->getId(),
+            'deletedAt' => null,
         ]);
     }
 
@@ -39,6 +41,7 @@ final readonly class UrlProvider
     {
         return $this->queryRepository->findBy([
             'type' => UrlTypeEnum::PUBLIC,
+            'deletedAt' => null,
         ]);
     }
 

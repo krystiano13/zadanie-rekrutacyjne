@@ -17,16 +17,9 @@ class User extends BaseEntity implements UserInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $expiresAt;
 
-    /**
-     * @var Collection<int, Url>
-     */
-    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'user')]
-    private Collection $urls;
-
     public function __construct()
     {
         parent::__construct();
-        $this->urls = new ArrayCollection();
     }
 
     public function getExpiresAt(): \DateTimeImmutable
@@ -37,28 +30,6 @@ class User extends BaseEntity implements UserInterface
     public function setExpiresAt(\DateTimeImmutable $expiresAt): void
     {
         $this->expiresAt = $expiresAt;
-    }
-
-    /**
-     * @return Collection<int, Url>
-     */
-    public function getUrls(): Collection
-    {
-        return $this->urls;
-    }
-
-    public function addUrl(Url $url): void
-    {
-        if (!$this->urls->contains($url)) {
-            $this->urls->add($url);
-        }
-    }
-
-    public function removeUrl(Url $url): void
-    {
-        if ($this->urls->contains($url)) {
-            $this->urls->removeElement($url);
-        }
     }
 
     public function getRoles(): array

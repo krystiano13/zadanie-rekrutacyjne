@@ -33,7 +33,7 @@ class Url extends BaseEntity
     #[ORM\Column(type: Types::INTEGER)]
     private int $clicks = 0;
 
-    #[ORM\ManyToOne(targetEntity: Url::class, inversedBy: 'urls')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'urls')]
     private User $user;
 
     public function getCode(): string

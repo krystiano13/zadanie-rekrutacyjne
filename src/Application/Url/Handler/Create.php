@@ -7,6 +7,7 @@ namespace App\Application\Url\Handler;
 use App\Application\Url\DTO\CreateUrlRequestDTO;
 use App\Application\Url\Provider\UrlProvider;
 use App\Domain\Entity\Url;
+use App\Domain\Entity\User;
 use App\Domain\Enum\ExpireTimeEnum;
 use App\Infrastructure\Url\Repository;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -19,13 +20,18 @@ final readonly class Create
     ) {
     }
 
-    public function handle(CreateUrlRequestDTO $dto, string $shortUrl): void
-    {
+    public function handle(
+        CreateUrlRequestDTO $dto,
+        string $shortUrl,
+        User $user,
+    ): void {
         $url = new Url();
 
         $url->setUrl($dto->url);
         $url->setCode($shortUrl);
         $url->setType($dto->type);
+
+        $url->setUser($user);
 
         if ($dto->expireTime) {
             switch ($dto->expireTime) {
