@@ -8,6 +8,10 @@ final readonly class ShortUrl
 {
     public function shortenUrl(string $url): string
     {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException('Invalid URL');
+        }
+
         return substr(
             base64_encode(
                 sha1(
