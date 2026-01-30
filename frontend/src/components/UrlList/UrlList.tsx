@@ -129,7 +129,15 @@ export function UrlList() {
                                     <label>{ item.alias ? item.alias : '(brak aliasu)' }</label>
                                 </div>
                                 <div className="flex items-center">
-                                    <button className="btn btn-active mt-0!">Copy</button>
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(`https://localhost/${item.alias ? item.alias : item.code}`)
+                                            alert('Skopiowano do schowka')
+                                        }}
+                                        className="btn btn-active mt-0!"
+                                    >
+                                        Copy
+                                    </button>
                                     <button className="btn btn-active mt-0!">Stats</button>
                                     {
                                         filter === 'private' &&
