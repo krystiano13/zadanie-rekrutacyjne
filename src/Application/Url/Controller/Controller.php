@@ -12,9 +12,14 @@ use App\Application\Url\ShortUrl;
 use App\Domain\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 final class Controller extends AbstractController
 {
@@ -39,6 +44,7 @@ final class Controller extends AbstractController
         CreateUrlRequestDTO $dto,
         Create $createHandler,
         ShortUrl $shortUrl,
+        RateLimiterFactoryInterface $linkLimiter
     ): JsonResponse {
         try {
             /**
@@ -46,12 +52,22 @@ final class Controller extends AbstractController
              */
             $user = $this->getUser();
 
+            $limiter = $linkLimiter->create($user->getId()->toString());
+
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
+
             $shortenedUrl = $shortUrl->shortenUrl($dto->url);
             $createHandler->handle($dto, $shortenedUrl, $user);
 
             return $this->json([
                 'url' => $shortenedUrl,
             ], 200);
+        } catch (TooManyRequestsHttpException $e) {
+            return $this->json([
+                'error' => 'Too many requests',
+            ], Response::HTTP_TOO_MANY_REQUESTS);
         } catch (UnprocessableEntityHttpException $e) {
             return $this->json([
                 'error' => $e->getMessage(),
