@@ -19,8 +19,7 @@ final readonly class UrlProvider
         $result = $this->queryRepository->findByShortCode($shortCode)
             ->getResult();
 
-        if (count($result) > 0)
-        {
+        if (count($result) > 0) {
             return $result[0];
         }
 
@@ -29,9 +28,9 @@ final readonly class UrlProvider
 
     public function isAliasFree(string $alias): bool
     {
-        return count(
+        return 0 === count(
             $this->queryRepository->findByAlias($alias)->getResult()
-        ) === 0;
+        );
     }
 
     /**

@@ -16,10 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
-
 
 final class Controller extends AbstractController
 {
@@ -44,7 +42,7 @@ final class Controller extends AbstractController
         CreateUrlRequestDTO $dto,
         Create $createHandler,
         ShortUrl $shortUrl,
-        RateLimiterFactoryInterface $linkLimiter
+        RateLimiterFactoryInterface $linkLimiter,
     ): JsonResponse {
         try {
             /**
