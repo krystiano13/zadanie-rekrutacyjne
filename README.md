@@ -1,52 +1,26 @@
 # Zadanie Rekrutacyjne: URL Shortener
 
-## Opis zadania
+## Uruchomienie
 
-Stwórz system do skracania linków URL ze statystykami kliknięć.
-
-## Wymagania funkcjonalne
-
-- **Automatyczne generowanie sesji użytkownika bez podawania danych**
-- **Tworzenie skróconych linków**
-- **Widoczność linku: publiczny / prywatny**
-- **Opcjonalny czas wygaśnięcia (1h / 1d / 1t)**
-- **Opcjonalny własny alias** (jeśli wolny)
-- **Lista własnych linków**
-- **Lista wszystkich publicznych linków** (bez autoryzacji)
-- **Usuwanie linków** (soft delete)
-- **Statystyki kliknięć** (zliczane asynchronicznie przez RabbitMQ)
-- **Rate limit:** max 10 linków / minutę / sesja
-
-## Endpointy API
-
-```
-POST   /api/session                            - utworzenie sesji
-GET    /api/session                            - pobranie sesji
-POST   /api/urls                               - tworzenie linku
-GET    /api/urls                               - lista własnych linków
-GET    /api/urls/{id}/stats                    - statystyki kliknięć
-DELETE /api/urls/{id}                          - usunięcie linku
-GET    /api/public                             - wszystkie publiczne linki
-GET    /{shortCode}                            - przekierowanie
+```bash
+docker compose up -d --build
 ```
 
-## Wymagania techniczne
+## Następnie z poziomu kontenera php
 
-- **Backend:** Symfony 8 + PHP 8.4 ( opcjonalnie API Platform 4 )
-- **Frontend:** Next.js 16 / React 19
-- **Baza danych:** PostgreSQL / MariaDB / MongoDB - wybierz
-- **Message Broker:** RabbitMQ
-- **Autoryzacja:** JWT token
-- **Docker:** docker-compose (starter w repo)
-- **Testy:** minimum 2 testy jednostkowe
+```bash
+php bin/console d:d:c
+php bin/console d:m:m
+```
 
-LUB
+## Dodatkowo uruchamiamy consumer Symfony Messenger
 
-- **Backend/Frontend/Mobile** Kotlin Multiplatform
+```bash
+php bin/console messenger:consume async -vv
+```
 
-## Dostarcz
+## Następnie z poziomu kontenera react (jeśli okaże się konieczne)
 
-- Fork repozytorium
-- Działający `docker-compose up`
-- README z instrukcją uruchomienia
-- Zadanie zrealizuj do 30.01.2026
+```bash
+pnpm install --frozen-lockfile
+```
