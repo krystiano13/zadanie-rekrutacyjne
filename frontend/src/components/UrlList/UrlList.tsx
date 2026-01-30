@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import {Spinner} from "../Spinner/Spinner.tsx";
+import { Spinner } from "../Spinner/Spinner.tsx";
+import {Stats} from "../Stats/Stats.tsx";
 
 interface Link {
     id: string,
     code: string,
     url: string,
     alias: string|null,
+    showStats: boolean,
+    clicks: number
 }
 
 export function UrlList() {
@@ -13,6 +16,8 @@ export function UrlList() {
     const [links, setLinks] = useState<Link[]>([]);
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [fetchErrors, setFetchErrors] = useState<string[]>([]);
+    const [selectedStats, setSelectedStats] = useState<number>(0);
+    const [statsVisible, setStatsVisible] = useState<boolean>(false);
 
     async function handleDelete(id: string) {
         await fetch(`https://localhost/api/urls/${id}`, {
@@ -104,6 +109,11 @@ export function UrlList() {
 
     return (
         <div className="w-screen h-screen flex flex-col items-start px-8 sm:px-48 pb-12 lg:px-64">
+            <Stats
+                clicks={selectedStats}
+                visible={statsVisible}
+                close={() => setStatsVisible(false)}
+            />
             <h1 className="font-medium text-4xl pt-24">
                 URL Shortener
             </h1>
@@ -151,7 +161,15 @@ export function UrlList() {
                                     >
                                         Copy
                                     </button>
-                                    <button className="btn btn-active mt-0!">Stats</button>
+                                    <button
+                                        className="btn btn-active mt-0!"
+                                        onClick={() => {
+                                            setSelectedStats(item.clicks);
+                                            setStatsVisible(true);
+                                        }}
+                                    >
+                                        Stats
+                                    </button>
                                     {
                                         filter === 'private' &&
                                         <button
