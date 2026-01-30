@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {Spinner} from "../Spinner/Spinner.tsx";
 
 interface Link {
+    id: string,
     code: string,
     url: string,
     alias: string|null,
@@ -12,6 +13,18 @@ export function UrlList() {
     const [links, setLinks] = useState<Link[]>([]);
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [fetchErrors, setFetchErrors] = useState<string[]>([]);
+
+    async function handleDelete(id: string) {
+        await fetch(`https://localhost/api/urls/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(() => {
+                loadPrivate();
+            })
+    }
 
     async function handleCreate(e: FormDataEvent) {
         setIsFetching(true);
@@ -141,7 +154,14 @@ export function UrlList() {
                                     <button className="btn btn-active mt-0!">Stats</button>
                                     {
                                         filter === 'private' &&
-                                        <button className="btn btn-active mt-0!">Delete</button>
+                                        <button
+                                            onClick={() => {
+                                                handleDelete(item.id)
+                                            }}
+                                            className="btn btn-active mt-0!"
+                                        >
+                                            Delete
+                                        </button>
                                     }
                                 </div>
                             </div>
