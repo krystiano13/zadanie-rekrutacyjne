@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Symfony\Security;
 
 use App\Application\User\Provider\UserProvider;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,10 @@ final class JwtAuthenticator extends AbstractAuthenticator
 
         try {
             $payload = $this->tokenManager->parse($token);
+
+            if (empty($payload)) {
+                throw new InvalidTokenException();
+            }
 
             return new SelfValidatingPassport(
                 new UserBadge($payload['username'], function ($sessionId) use ($payload) {

@@ -7,7 +7,7 @@ namespace App\Application\User\Provider;
 use App\Domain\Entity\User;
 use App\Infrastructure\User\QueryRepository;
 
-final readonly class UserProvider
+readonly class UserProvider
 {
     public function __construct(private QueryRepository $repository)
     {
