@@ -59,7 +59,7 @@ function App() {
         <Spinner visible={isLoading} />
 
         {
-            <UrlList />
+            verified && <UrlList />
         }
     </>
   )
