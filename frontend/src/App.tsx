@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "./components/Spinner/Spinner.tsx";
+import { UrlList } from "./components/UrlList/UrlList.tsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [verified, setVerified] = useState<boolean>(false);
 
   async function createSession() {
       setIsLoading(true);
@@ -14,6 +16,7 @@ function App() {
           .then(data => {
               if (data.token) {
                   localStorage.setItem('token', data.token);
+                  setVerified(true);
                   setIsLoading(false);
               }
           })
@@ -41,6 +44,8 @@ function App() {
               if (data !== null) {
                   console.log(data);
               }
+
+              setVerified(true);
           })
           .finally(() => setIsLoading(false))
   }
@@ -52,6 +57,10 @@ function App() {
   return (
     <>
         <Spinner visible={isLoading} />
+
+        {
+            <UrlList />
+        }
     </>
   )
 }

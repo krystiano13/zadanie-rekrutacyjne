@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.btn {
+    @apply px-3 py-1 text-black border mr-1 font-semibold mt-8 transition cursor-pointer;
+}
+
+.btn-active {
+    @apply bg-black text-white;
+}
