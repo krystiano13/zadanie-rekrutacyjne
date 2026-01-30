@@ -27,9 +27,8 @@ final readonly class Create
     ): void {
         $url = new Url();
 
-        if (filter_var($dto->url, FILTER_VALIDATE_URL) === false)
-        {
-            throw new UnprocessableEntityHttpException("Invalid URL");
+        if (false === filter_var($dto->url, FILTER_VALIDATE_URL)) {
+            throw new UnprocessableEntityHttpException('Invalid URL');
         }
 
         $url->setUrl($dto->url);

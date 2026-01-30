@@ -19,7 +19,7 @@ export function Stats({ linkId, close, visible }: Props) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.clicks) {
+                if (data.clicks || data.clicks === 0) {
                     setClicks(data.clicks)
                 }
             })

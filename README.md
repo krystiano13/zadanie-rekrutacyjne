@@ -37,3 +37,6 @@ pnpm install --frozen-lockfile
 vendor/bin/phpstan analyse src
 ./vendor/bin/php-cs-fixer fix
 ```
+
+Z racji iż jako docker'owy starter użyłem https://github.com/dunglas/symfony-docker, to przed użyciem należy wejść z poziomu przeglądarki na https://localhost aby potwierdzić certyfikaty https
+Frontend znajduje się natomiast na porcie http://localhost:5173

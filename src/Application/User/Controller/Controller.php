@@ -21,7 +21,9 @@ final class Controller extends AbstractController
             /** @var User|null $user */
             $user = $this->getUser();
 
-            if (!$user instanceof User) {
+            if (
+                !$user instanceof User
+            ) {
                 throw new UnauthorizedHttpException('Unauthorized');
             }
 
