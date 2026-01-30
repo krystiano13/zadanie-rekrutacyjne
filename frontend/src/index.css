@@ -7,3 +7,11 @@
 .btn-active {
     @apply bg-black text-white;
 }
+
+input {
+    @apply border-1 p-1;
+}
+
+select {
+    @apply border-1 p-1;
+}
