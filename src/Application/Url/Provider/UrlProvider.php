@@ -6,6 +6,7 @@ namespace App\Application\Url\Provider;
 
 use App\Domain\Entity\Url;
 use App\Domain\Entity\User;
+use App\Infrastructure\Common\DTO\PaginationDTO;
 use App\Infrastructure\Url\QueryRepository;
 
 final readonly class UrlProvider
@@ -36,17 +37,17 @@ final readonly class UrlProvider
     /**
      * @return Url[]
      */
-    public function loadByUser(User $user): array
+    public function loadByUser(User $user, PaginationDTO $dto): array
     {
-        return $this->queryRepository->findByUser($user)->getResult();
+        return $this->queryRepository->findByUser($user, $dto)->getResult();
     }
 
     /**
      * @return Url[]
      */
-    public function loadAllPublic(): array
+    public function loadAllPublic(PaginationDTO $dto): array
     {
-        return $this->queryRepository->findAllPublic()->getResult();
+        return $this->queryRepository->findAllPublic($dto)->getResult();
     }
 
     /**

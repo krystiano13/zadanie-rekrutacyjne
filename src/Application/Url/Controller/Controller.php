@@ -10,9 +10,11 @@ use App\Application\Url\Handler\Delete;
 use App\Application\Url\Provider\UrlProvider;
 use App\Application\Url\ShortUrl;
 use App\Domain\Entity\User;
+use App\Infrastructure\Common\DTO\PaginationDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -22,14 +24,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class Controller extends AbstractController
 {
     #[Route(path: '/api/urls', name: 'api_urls_index', methods: ['GET', 'HEAD'])]
-    public function index(UrlProvider $provider): JsonResponse
-    {
+    public function index(
+        #[MapQueryString] PaginationDTO $paginationDTO,
+        UrlProvider $provider,
+    ): JsonResponse {
         /**
          * @var User $user
          */
         $user = $this->getUser();
 
-        $urls = $provider->loadByUser($user);
+        $urls = $provider->loadByUser($user, $paginationDTO);
 
         return $this->json([
             'urls' => $urls,
@@ -115,9 +119,11 @@ final class Controller extends AbstractController
     }
 
     #[Route(path: '/api/public', name: 'api_public', methods: ['GET', 'HEAD'])]
-    public function getPublic(UrlProvider $provider): JsonResponse
-    {
-        $urls = $provider->loadAllPublic();
+    public function getPublic(
+        #[MapQueryString] PaginationDTO $paginationDTO,
+        UrlProvider $provider,
+    ): JsonResponse {
+        $urls = $provider->loadAllPublic($paginationDTO);
 
         return $this->json([
             'urls' => $urls,
