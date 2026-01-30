@@ -6,7 +6,6 @@ namespace App\Application\Url\Provider;
 
 use App\Domain\Entity\Url;
 use App\Domain\Entity\User;
-use App\Domain\Enum\UrlTypeEnum;
 use App\Infrastructure\Url\QueryRepository;
 
 final readonly class UrlProvider
@@ -15,12 +14,24 @@ final readonly class UrlProvider
     {
     }
 
+    public function loadByShortCode(string $shortCode): ?Url
+    {
+        $result = $this->queryRepository->findByShortCode($shortCode)
+            ->getResult();
+
+        if (count($result) > 0)
+        {
+            return $result[0];
+        }
+
+        return null;
+    }
+
     public function isAliasFree(string $alias): bool
     {
-        return null !== $this->queryRepository->findOneBy([
-            'alias' => $alias,
-            'deletedAt' => null,
-        ]);
+        return count(
+            $this->queryRepository->findByAlias($alias)->getResult()
+        ) === 0;
     }
 
     /**
@@ -28,10 +39,7 @@ final readonly class UrlProvider
      */
     public function loadByUser(User $user): array
     {
-        return $this->queryRepository->findBy([
-            'user' => $user->getId(),
-            'deletedAt' => null,
-        ]);
+        return $this->queryRepository->findByUser($user)->getResult();
     }
 
     /**
@@ -39,10 +47,7 @@ final readonly class UrlProvider
      */
     public function loadAllPublic(): array
     {
-        return $this->queryRepository->findBy([
-            'type' => UrlTypeEnum::PUBLIC,
-            'deletedAt' => null,
-        ]);
+        return $this->queryRepository->findAllPublic()->getResult();
     }
 
     /**
@@ -56,12 +61,5 @@ final readonly class UrlProvider
     public function loadById(string $id): ?Url
     {
         return $this->queryRepository->find($id);
-    }
-
-    public function loadByShortCode(string $shortCode): ?Url
-    {
-        return $this->queryRepository->findOneBy([
-            'code' => $shortCode,
-        ]);
     }
 }
