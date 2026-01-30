@@ -6,7 +6,7 @@ interface Props {
 
 export function Spinner({ visible }: Props) {
     return (
-        <div className={`w-screen fixed pointer-events-none h-screen flex justify-center items-center bg-white transition ${!visible ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`w-full absolute pointer-events-none h-full flex justify-center items-center bg-white transition ${!visible ? 'opacity-0' : 'opacity-100'}`}>
             <span className="loader"></span>
         </div>
     )

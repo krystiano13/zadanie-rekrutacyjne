@@ -55,13 +55,13 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="w-screen h-screen">
         <Spinner visible={isLoading} />
 
         {
             verified && <UrlList />
         }
-    </>
+    </div>
   )
 }
 

@@ -6,10 +6,7 @@ namespace App\Application\Url\Provider;
 
 use App\Domain\Entity\Url;
 use App\Domain\Entity\User;
-use App\Infrastructure\Common\DTO\PaginationDTO;
 use App\Infrastructure\Url\QueryRepository;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 final readonly class UrlProvider
 {
@@ -39,19 +36,17 @@ final readonly class UrlProvider
     /**
      * @return Url[]
      */
-    public function loadByUser(User $user, PaginationDTO $dto): array
+    public function loadByUser(User $user): array
     {
-        $query = $this->queryRepository->findByUser($user, $dto);
-        return $this->paginateUrls($query, $dto);
+        return $this->queryRepository->findByUser($user)->getResult();
     }
 
     /**
      * @return Url[]
      */
-    public function loadAllPublic(PaginationDTO $dto): array
+    public function loadAllPublic(): array
     {
-        $query = $this->queryRepository->findAllPublic($dto);
-        return $this->paginateUrls($query, $dto);
+        return $this->queryRepository->findAllPublic()->getResult();
     }
 
     /**
@@ -65,31 +60,5 @@ final readonly class UrlProvider
     public function loadById(string $id): ?Url
     {
         return $this->queryRepository->find($id);
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function paginateUrls(Query $query, PaginationDTO $dto): array {
-        $paginator = new Paginator($query);
-
-        $total = $paginator->count();
-        $totalPages = (int) ceil($total / $dto->perPage);
-
-        $result = [];
-
-        foreach ($paginator as $url) {
-            $result[] = $url;
-        }
-
-        return [
-            'items' => $result,
-            'pagination' => [
-                'page' => $dto->page,
-                'perPage' => $dto->perPage,
-                'total' => $total,
-                'totalPages' => $totalPages,
-            ],
-        ];
     }
 }

@@ -7,7 +7,6 @@ namespace App\Infrastructure\Url;
 use App\Domain\Entity\Url;
 use App\Domain\Entity\User;
 use App\Domain\Enum\UrlTypeEnum;
-use App\Infrastructure\Common\DTO\PaginationDTO;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -44,33 +43,25 @@ final class QueryRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
-    public function findByUser(User $user, PaginationDTO $dto): Query
+    public function findByUser(User $user): Query
     {
-        $pageIndex = $dto->page - 1;
-
         return $this->createQueryBuilder('u')
             ->where('(u.user = :user)')
             ->andWhere('u.deletedAt IS NULL')
             ->andWhere('(u.expiresAt IS NULL OR u.expiresAt > :now)')
             ->setParameter('user', $user)
             ->setParameter('now', new \DateTime())
-            ->setFirstResult($pageIndex * $dto->perPage)
-            ->setMaxResults($dto->perPage)
             ->getQuery();
     }
 
-    public function findAllPublic(PaginationDTO $dto): Query
+    public function findAllPublic(): Query
     {
-        $pageIndex = $dto->page - 1;
-
         return $this->createQueryBuilder('u')
             ->where('(u.type = :type)')
             ->andWhere('u.deletedAt IS NULL')
             ->andWhere('(u.expiresAt IS NULL OR u.expiresAt > :now)')
             ->setParameter('type', UrlTypeEnum::PUBLIC)
             ->setParameter('now', new \DateTime())
-            ->setFirstResult($pageIndex * $dto->perPage)
-            ->setMaxResults($dto->perPage)
             ->getQuery();
     }
 }
