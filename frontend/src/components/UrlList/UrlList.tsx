@@ -8,7 +8,6 @@ interface Link {
     url: string,
     alias: string|null,
     showStats: boolean,
-    clicks: number
 }
 
 export function UrlList() {
@@ -110,7 +109,7 @@ export function UrlList() {
     return (
         <div className="w-screen h-screen flex flex-col items-start px-8 sm:px-48 pb-12 lg:px-64">
             <Stats
-                clicks={selectedStats}
+                linkId={selectedStats}
                 visible={statsVisible}
                 close={() => setStatsVisible(false)}
             />
@@ -164,7 +163,7 @@ export function UrlList() {
                                     <button
                                         className="btn btn-active mt-0!"
                                         onClick={() => {
-                                            setSelectedStats(item.clicks);
+                                            setSelectedStats(item.id);
                                             setStatsVisible(true);
                                         }}
                                     >
@@ -223,7 +222,15 @@ export function UrlList() {
 
                     <input name="alias" className="w-full" placeholder="Alias" />
 
-                    <button disabled={isFetching} className="btn btn-active">Create</button>
+                    <button
+                        disabled={isFetching}
+                        className="btn btn-active"
+                        style={{
+                          opacity: isFetching ? '0.4' : '1'
+                        }}
+                    >
+                        Create
+                    </button>
                 </form>
             }
         </div>
